@@ -4,7 +4,7 @@
 
 ![Blooop Demo](https://github.com/user-attachments/assets/0060a7b8-20ed-44f4-9f8e-ac0bdd4eb98c)
 
-`blooop` is a semi-high-performance terminal wrapper designed for the AI-first developer workflow. It monitors Claude Code and alerts you via sound the second it goes idle or encounters an interactive prompt.
+`blooop` is a decently-high-performance terminal wrapper designed for the AI-first developer workflow. Claude code. It monitors Claude Code and alerts you via a sound the second it goes idle or encounters an interactive prompt. That way you can keep the vibes flowing. 
 
 ## Why blooop?
 

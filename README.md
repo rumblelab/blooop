@@ -2,6 +2,8 @@
 
 **Stop staring at a static cursor. Get a ping when Claude needs you.**
 
+![Blooop Demo](https://private-user-images.githubusercontent.com/43090861/552894675-0060a7b8-20ed-44f4-9f8e-ac0bdd4eb98c.gif)
+
 `blooop` is a semi-high-performance terminal wrapper designed for the AI-first developer workflow. It monitors Claude Code and alerts you via sound the second it goes idle or encounters an interactive prompt.
 
 ## Why blooop?

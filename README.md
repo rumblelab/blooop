@@ -1,6 +1,6 @@
 # blooop: give Claude Code a voice.
 
-**Stop staring at a static cursor. Get a ping when Claude needs you.**
+**If you use claude code, you're gonna want blooop. Stop staring at a static cursor. Get a ping when Claude needs you.**
 
 ![Blooop Demo](https://github.com/user-attachments/assets/0060a7b8-20ed-44f4-9f8e-ac0bdd4eb98c)
 

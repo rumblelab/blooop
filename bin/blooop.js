@@ -63,6 +63,7 @@ let shuttingDown = false;
 let pickerActive = false;
 let signalExitTimer = null;
 let watcher = null;
+let ptyOutputBuffered = false;
 
 function restoreTerminal() {
   if (!rawModeEnabled) return;
@@ -131,6 +132,11 @@ function onSigTerm() {
 }
 
 function onShellData(data) {
+  // While the sound picker is on the alternate screen, Claude Code's PTY may
+  // emit \x1b[?1049l (its own alternate-screen restore) which would flip us
+  // back to the main screen mid-picker. Buffer and discard PTY output during
+  // this window; Claude Code will redraw after we send a resize signal.
+  if (ptyOutputBuffered) return;
   process.stdout.write(data);
 }
 
@@ -148,8 +154,14 @@ function onStdinData(data) {
   const key = Buffer.isBuffer(data) ? data.toString('utf8') : String(data);
   if (key === '\x02') { // Ctrl+B — open sound picker
     pickerActive = true;
+    ptyOutputBuffered = true;
     showSoundPicker(process.stdin, process.stdout, () => {
+      ptyOutputBuffered = false;
       pickerActive = false;
+      // Force Claude Code to redraw its UI now that the main screen is back.
+      // Sending a resize with the same dimensions triggers SIGWINCH, which
+      // causes Claude Code to re-render and recover the input line.
+      try { shell.resize(process.stdout.columns || 80, process.stdout.rows || 24); } catch (_) {}
     });
     return;
   }

@@ -41,9 +41,9 @@ function saveConfig(config) {
  * @param {() => void} onDone
  */
 function showSoundPicker(stdin, stdout, onDone) {
-  // Save cursor position so we can fully restore terminal state when done.
-  // This prevents the picker's output from corrupting the host app's display.
-  try { stdout.write('\x1b7'); } catch (_) { onDone(); return; }
+  // Switch to the alternate screen buffer. This fully preserves the main
+  // screen regardless of scroll position — no cursor save/restore math needed.
+  try { stdout.write('\x1b[?1049h\x1b[H'); } catch (_) { onDone(); return; }
 
   const builtins = getBuiltinSounds();
 
@@ -70,17 +70,13 @@ function showSoundPicker(stdin, stdout, onDone) {
   try {
     stdout.write(lines.join('\r\n') + '\r\n');
   } catch (_) {
-    try { stdout.write('\x1b8'); } catch (_2) {}
+    try { stdout.write('\x1b[?1049l'); } catch (_2) {}
     onDone();
     return;
   }
 
-  function eraseMenu() {
-    try { stdout.write(`\x1b[${lines.length}A\x1b[0J`); } catch (_) {}
-  }
-
-  function restoreCursor() {
-    try { stdout.write('\x1b8'); } catch (_) {}
+  function restoreScreen() {
+    try { stdout.write('\x1b[?1049l'); } catch (_) {}
   }
 
   function onKey(data) {
@@ -88,8 +84,7 @@ function showSoundPicker(stdin, stdout, onDone) {
 
     if (key === '\x1b' || key === '\x03' || key === '\x02') {
       stdin.off('data', onKey);
-      eraseMenu();
-      restoreCursor();
+      restoreScreen();
       onDone();
       return;
     }
@@ -98,7 +93,6 @@ function showSoundPicker(stdin, stdout, onDone) {
       stdin.off('data', onKey);
       const cfg = loadConfig();
       cfg.muted = !cfg.muted;
-      eraseMenu();
 
       let confirmMsg = '';
       try {
@@ -111,8 +105,7 @@ function showSoundPicker(stdin, stdout, onDone) {
       try { stdout.write(confirmMsg); } catch (_) {}
 
       const muteTimer = setTimeout(() => {
-        try { stdout.write('\r\x1b[2K'); } catch (_) {}
-        restoreCursor();
+        restoreScreen();
         onDone();
       }, 1200);
       if (typeof muteTimer.unref === 'function') muteTimer.unref();
@@ -130,7 +123,6 @@ function showSoundPicker(stdin, stdout, onDone) {
         cfg.sound = chosen.path;
       }
       delete cfg.muted;
-      eraseMenu();
 
       let confirmMsg = '';
       try {
@@ -140,14 +132,10 @@ function showSoundPicker(stdin, stdout, onDone) {
         confirmMsg = '\x1b[31merror saving config\x1b[0m';
       }
 
-      // Write confirmation on the current line (no trailing newline).
-      // After a brief delay, erase it and restore the cursor so the host
-      // app's terminal state is left exactly as it was before the picker.
       try { stdout.write(confirmMsg); } catch (_) {}
 
       const timer = setTimeout(() => {
-        try { stdout.write('\r\x1b[2K'); } catch (_) {} // erase confirmation line
-        restoreCursor();
+        restoreScreen();
         onDone();
       }, 1200);
       if (typeof timer.unref === 'function') timer.unref();

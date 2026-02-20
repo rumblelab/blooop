@@ -1,0 +1,53 @@
+{
+  "name": "blooop",
+  "version": "1.0.0",
+  "description": "Sound and desktop notification when Claude Code or AI agents finish and need your attention",
+  "main": "bin/blooop.js",
+  "bin": {
+    "blooop": "./bin/blooop.js"
+  },
+  "scripts": {
+    "test": "node --test 'test/**/*.test.js'"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "sounds/"
+  ],
+  "keywords": [
+    "claude",
+    "claude-code",
+    "anthropic",
+    "ai",
+    "llm",
+    "agent",
+    "notification",
+    "desktop-notification",
+    "sound",
+    "alert",
+    "terminal",
+    "cli",
+    "idle",
+    "productivity",
+    "developer-tools"
+  ],
+  "author": "moo",
+  "license": "ISC",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rumblelab/blooop"
+  },
+  "bugs": {
+    "url": "https://github.com/rumblelab/blooop/issues"
+  },
+  "homepage": "https://blooop.lol",
+  "dependencies": {
+    "node-notifier": "10.0.1",
+    "node-pty": "1.1.0",
+    "semver": "7.7.4"
+  }
+}

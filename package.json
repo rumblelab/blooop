@@ -1,7 +1,7 @@
 {
   "name": "blooop",
   "version": "1.0.0",
-  "description": "Sound and desktop notification when Claude Code or AI agents finish and need your attention",
+  "description": "Sound and desktop notification when Claude Code finishes and needs your attention",
   "main": "bin/blooop.js",
   "bin": {
     "blooop": "./bin/blooop.js"

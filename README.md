@@ -1,8 +1,8 @@
-# blooop: give your coding agent a voice.
+# blooop: give Claude Code a voice.
 
-**Stop staring at a static cursor. Get a ping when your AI agent needs you.**
+**Stop staring at a static cursor. Get a ping when Claude needs you.**
 
-`blooop` is a semi-high-performance terminal wrapper designed for the AI-first developer workflow. It monitors your CLI agents (like Claude Code and others) and alerts you via sound the second they go idle or encounter an interactive prompt.
+`blooop` is a semi-high-performance terminal wrapper designed for the AI-first developer workflow. It monitors Claude Code and alerts you via sound the second it goes idle or encounters an interactive prompt.
 
 ## Why blooop?
 
@@ -22,7 +22,7 @@ Test your notifications and sound instantly:
 blooop --demo
 ```
 
-Then, wrap your favorite agent:
+Then, wrap Claude Code:
 
 ```sh
 blooop claude
@@ -44,7 +44,7 @@ if this doesn't make sense, ask claude to check out this readme. it will explain
 `blooop` implements a low-latency PTY (Pseudo-Terminal) pass-through. Unlike simple piping, this ensures:
 
 - **Full ANSI Support:** Colors, bold text, and terminal "spinners" work perfectly.
-- **Interactive Shells:** Claude/gemini/codex behave exactly as if they were running natively.
+- **Interactive Shells:** Claude Code behaves exactly as if it were running natively.
 - **Heuristic Detection:** Intelligent pattern matching for interactive prompts (`y/n`, `confirm?`) and configurable idle-state triggers.
 
 ### Triggers
